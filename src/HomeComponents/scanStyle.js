@@ -6,7 +6,7 @@ const styles = {
     scrollViewStyle: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#99003d'
+        backgroundColor: '#ececec'
     },
 
     textTitle: {
@@ -90,9 +90,9 @@ const styles = {
     },
     buttonTouchable: {
         fontSize: 21,
-        backgroundColor: '#ff0066',
-        marginTop: 32,
-
+        backgroundColor: '#8CC53D',
+        marginTop: 80,
+        borderRadius:5,
         width: deviceWidth - 62,
         justifyContent: 'center',
         alignItems: 'center',

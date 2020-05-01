@@ -34,10 +34,15 @@ const Home = (props) => {
                 </Carousel>
             </View>
             <CustomBorder customStyles={{borderColor:'grey',borderWidth:1.5,elevation:2,height:55,marginTop:25}}>
-                <View style={styles.viewStyle}>
-                    <Image source={require('../assets/avtar.png')} style={{width:30,height:30,}} />
-                    <Text style={styles.textStyle}>Capturar</Text>
-                </View>
+                <TouchableOpacity
+                        style={{alignSelf:"flex-start",width:"100%"}}
+                        onPress={()=> props.navigation.navigate('Scan')}
+                    >
+                    <View style={styles.viewStyle} >
+                        <Image source={require('../assets/avtar.png')} style={{width:30,height:30,}} />
+                        <Text style={styles.textStyle}>Capturar</Text>
+                    </View>
+                </TouchableOpacity>
                 
             </CustomBorder>
 

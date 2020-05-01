@@ -195,7 +195,7 @@ import CustomActivityIndicator from '../CustomUI/CustomActivityIndicator';
         textDecorationLine:'underline'
     },
     loginBtn:{
-        margin:20,
+      
         width:"90%",
         height:45,
         borderRadius:6,

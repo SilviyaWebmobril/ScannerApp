@@ -11,9 +11,10 @@ const AuthNavigator =(props) => {
 
     useEffect(async()=> {
 
-        const uid =  await AsyncStorage.getItem("uid");
+        const uid =  await AsyncStorage.getItem("hash");
+        console.log("hashcxhgvhbjcfxfxfxcvjbjkyvgjbxjvcs",uid);
         if(uid) {
-            console.log("uid",uid);
+            console.log("hashcxhgvhbjcfxfxfxcvjbjkyvgjbxjvcs",uid);
             setIsSignedIn(uid)
         }
 
@@ -21,12 +22,13 @@ const AuthNavigator =(props) => {
 
    
 
-    return isSignedIn ? (
+    return isSignedIn == null ? 
 
-        <DrawerNavigator />
-    ) : (
+        
         <LoginNavigator />
-    )
+    :
+        <DrawerNavigator />
 }
+
 
 export default AuthNavigator ;

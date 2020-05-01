@@ -8,6 +8,7 @@ import FAQ from '../HomeComponents/FAQ';
 import AboutUs from '../HomeComponents/Aboutus';
 import Privacy from '../HomeComponents/Privacy';
 import ContactUs from '../HomeComponents/ContactUs';
+import Scan from '../HomeComponents/Scan';
 
 
 const HomeStackNavigator = (props) => {
@@ -23,6 +24,17 @@ const HomeStackNavigator = (props) => {
                         header : props => <CustomHeader  {...props}/>
                     }}
                 
+                />
+                <Stack.Screen
+                    component={Scan}
+                    name="Scan"
+                    options ={{
+                        title : "Capturar",
+                        headerStyle: {
+                            backgroundColor: "#8CC53D",
+                          },
+                          headerTintColor: '#fff',
+                    }}
                 />
                 <Stack.Screen
                     component={FAQ}
