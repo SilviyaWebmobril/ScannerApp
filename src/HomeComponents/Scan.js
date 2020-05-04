@@ -23,9 +23,10 @@ import {
     Colors,
 } from 'react-native/Libraries/NewAppScreen';
 import base64 from 'react-native-base64'
-
+import { Buffer } from 'buffer';
 import Axios from 'axios';
 import ApiUrl from '../ApiUrl';
+global.Buffer = Buffer; // very important
 
 const Scan = (props) => {
 
@@ -38,43 +39,49 @@ const Scan = (props) => {
 
     const onSuccess = async (e) => {
         const check = e.data.substring(0, 4);
-        console.log('scanned data' + e);
-        console.log('scanned data' + e.data);
-        console.log('scanned data' + e.type);
+       
+       
         console.log('scanned data' + e.rawData);
-        console.log('scanned data' + e.target);
+
+        let hash =  await AsyncStorage.getItem("hash");
+        console.log("hash",hash);
+       // var encodedString = base64.encode(e.rawData);
+
+      // var encodedString = Buffer.from(e.rawData).toString('base64')
+
+       //console.log("encoded striing ... - ",encodedString);
+       
+        let formdata = {
+            "hash" :hash,
+            "base64" : e.rawData,
+        }
+        Axios.post(ApiUrl.base_url+ApiUrl.post_scan_data,formdata)
+            .then(respone =>{
+
+                console.log("response",respone.data);
+
+                setResult(e);
+                setScan(false);
+                setScanResult(true);
+
+            })
+            .catch(error =>{
+
+                console.log("show error",error);
+
+            })
+       
+      
         if (check === 'http') {
+            console.log('hiii');
             Linking
                 .openURL(e.data)
-                .catch(err => console.error('An error occured', err));
+                .catch(err => console.log('An error occured', err));
 
 
         } else {
 
-            let hash =  await AsyncStorage.getItem("hash");
-            console.log("hash",hash);
-            var encodedString = base64.encode(e.rawData);
-           
-            let formdata = {
-                "hash" :hash,
-                "base64" : encodedString,
-            }
-            Axios.post(ApiUrl.base_url+ApiUrl.post_scan_data,formdata)
-                .then(respone =>{
-
-                    console.log("response",respone.data);
-
-                    setResult(e);
-                    setScan(false);
-                    setScanResult(true);
-
-                })
-                .catch(error =>{
-
-                    console.log("show error",error);
-
-                })
-           
+          
         }
 
     }
