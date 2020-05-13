@@ -1,15 +1,16 @@
 import React ,{useState ,useEffect } from 'react';
 import { View, Image,StyleSheet, Text, TouchableOpacity ,TextInput,Button} from 'react-native';
 import CustomBorder from '../CustomUI/CustomBorder';
-import ApiUrl from '../ApiUrl';
-import Axios from 'axios';
-import AsyncStorage from '@react-native-community/async-storage';
 import CustomActivityIndicator from '../CustomUI/CustomActivityIndicator';
+import AuthContext from '../Context/AuthContext';
 
 
 
 
  const Login = (props) => {
+
+    console.log("auth",AuthContext);
+    const { signIn } = React.useContext(AuthContext);
 
     const [email ,setEmail] = useState("");
     const [emailError , setEmailError ] = useState(false);
@@ -19,7 +20,7 @@ import CustomActivityIndicator from '../CustomUI/CustomActivityIndicator';
     const [passwordError , setPasswordError ] = useState(false);
     const [passwordErrorMsg ,setPasswordErrorMsg ] = useState("");
 
-    const [loading_status ,setLoadingStatus ] = useState(false);
+   const [loading_status ,setLoadingStatus ] = useState(false);
 
 
     const emailValidator = (val) => {
@@ -79,23 +80,10 @@ import CustomActivityIndicator from '../CustomUI/CustomActivityIndicator';
                 "email":email,
                 "pass":password
             }
-            setLoadingStatus(true);
-            Axios.post(ApiUrl.base_url + ApiUrl.login ,formData)
-                .then(response => {
-                    setLoadingStatus(false);
-                    console.log("res",response.data);
-                    if(response.data.success){
-                        AsyncStorage.setItem("hash",response.data.hash);
-                        AsyncStorage.setItem("name",response.data.name);
-                        props.navigation.navigate('Home')
-                        
-                    }
-                  
-                }).catch(error => {
-
-                    console.log("error",error);
-                })
-
+           // setLoadingStatus(true);
+           //{"email":"test2@test.com","pass":"test2"}
+           signIn(formData);
+           
         }
 
     }

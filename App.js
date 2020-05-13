@@ -7,22 +7,22 @@ import AuthNavigator from './src/Navigators/AuthNavigator';
 const App =(props) => {
 
 
-    const [isLoading ,setLoading ] = useState(true);
+   //ßß const [isLoading ,setLoading ] = useState(true);
 
-    useEffect(() => {
-      const spalshInterval = setTimeout(()=> {
+    // useEffect(() => {
+    //   const spalshInterval = setTimeout(()=> {
   
-        setLoading(false);
+    //     setLoading(false);
   
-    },3000);
-      return () => {
-        clearTimeout(spalshInterval);
-      }
-    }, [])
+    // },3000);
+    //   return () => {
+    //     clearTimeout(spalshInterval);
+    //   }
+    // }, [])
   
-    if(isLoading){
-      return <Splash />
-    }
+    // if(isLoading){
+    //   return <Splash />
+    // }
   
     return (
       <>

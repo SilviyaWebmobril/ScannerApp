@@ -1,6 +1,6 @@
 import React ,{ useState }from 'react';
-import { StyleSheet, View,ActivityIndicator } from 'react-native';
-import { WebView } from 'react-native-webview';
+import { StyleSheet, View,ActivityIndicator ,Dimensions} from 'react-native';
+import Pdf from 'react-native-pdf';
 
 const Privacy = (props) => {
 
@@ -10,18 +10,28 @@ const Privacy = (props) => {
 
         setLoading(false)
     }
+    const path = require("../assets/privacy_policy.pdf")
 
 
     return(
         <View style={styles.container}>
 
-        <WebView
-                onLoad={hideSpinner}
-                source={{ uri:'http://webmobril.org/dev/locum/api/api_pages?page_id=2'}}
-                style={{ marginTop: 10 }}
-                
-            />
-            {loading && (
+                <Pdf
+                    source={require("../assets/privacy_policy.pdf")}
+                    onLoadComplete={(numberOfPages,filePath)=>{
+                      //  console.log(`number of pages: ${numberOfPages}`);
+                    }}
+                    onPageChanged={(page,numberOfPages)=>{
+                      //  console.log(`current page: ${page}`);
+                    }}
+                    onError={(error)=>{
+                        console.log(error);
+                    }}
+                    onPressLink={(uri)=>{
+                       // console.log(`Link presse: ${uri}`)
+                    }}  
+                     style={styles.pdf}/>
+            {/* {loading && (
                 <View
                 style={[
                 StyleSheet.absoluteFill,
@@ -35,7 +45,7 @@ const Privacy = (props) => {
                         size="large"
                     />
                 </View>
-            )}
+            )} */}
 
             
 
@@ -47,6 +57,11 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:"white"
+    },
+    pdf: {
+        flex:1,
+        width:Dimensions.get('window').width,
+        height:Dimensions.get('window').height,
     }
 })
 export default Privacy ;

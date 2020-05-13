@@ -1,9 +1,11 @@
 import React from 'react' ;
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import AuthContext from '../Context/AuthContext';
+
 
 const CustomDrawer = (props) => {
 
-
+    const {signOut} = React.useContext(AuthContext);
     return(
         <View style={styles.container}>
             <View style={styles.headerStyle}>
@@ -87,7 +89,7 @@ const CustomDrawer = (props) => {
             </View>
             <View  style={styles.viewLineStyle} />
             <View style={styles.rowStyle}>
-                <TouchableOpacity style={{width:"100%",alignSelf:"flex-start"}}>
+                <TouchableOpacity style={{width:"100%",alignSelf:"flex-start"}} onPress={()=> signOut()}>
                     <View style={styles.btnView}>
                         <Image source={require('./../assets/logout.png')} style={styles.imageStyle} />
                         <Text style={styles.textStyle}>Sair</Text>
