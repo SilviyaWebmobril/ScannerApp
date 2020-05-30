@@ -1,15 +1,34 @@
 import React from 'react' ;
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image,Alert } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import AuthContext from '../Context/AuthContext';
+import {onLogoutUser} from '../redux/actions/user_action';
+import { useDispatch } from 'react-redux';
 
 
 const CustomDrawer = (props) => {
 
-    const {signOut} = React.useContext(AuthContext);
-    return(
+    const disptach = useDispatch();
+
+    const showLogoutAlert = () =>{
+        Alert.alert(
+            'Sair',
+            "Weet je zeker dat je wilt uitloggen?",
+            [
+         
+           
+            {text: 'CANCEL', onPress: () =>  {console.log("ok")}},
+            {text: 'OK', onPress: () => {AsyncStorage.clear(); disptach(onLogoutUser())}},
+            ], 
+            { cancelable: false }
+            )
+        
+     }
+
+  return(
         <View style={styles.container}>
             <View style={styles.headerStyle}>
-                <Text style={styles.headerText}># John Deo</Text>
+                {/* <Text style={styles.headerText}># John Deo</Text> */}
             </View>
             <View style={styles.rowStyle}>
                 <TouchableOpacity onPress={()=> props.navigation.navigate("Home")} style={{width:"100%"}}>
@@ -89,7 +108,7 @@ const CustomDrawer = (props) => {
             </View>
             <View  style={styles.viewLineStyle} />
             <View style={styles.rowStyle}>
-                <TouchableOpacity style={{width:"100%",alignSelf:"flex-start"}} onPress={()=> signOut()}>
+                <TouchableOpacity style={{width:"100%",alignSelf:"flex-start"}} onPress={() => {showLogoutAlert()}}>
                     <View style={styles.btnView}>
                         <Image source={require('./../assets/logout.png')} style={styles.imageStyle} />
                         <Text style={styles.textStyle}>Sair</Text>

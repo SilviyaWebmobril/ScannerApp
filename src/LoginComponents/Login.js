@@ -1,16 +1,15 @@
 import React ,{useState ,useEffect } from 'react';
-import { View, Image,StyleSheet, Text, TouchableOpacity ,TextInput,Button} from 'react-native';
+import { View, Image,StyleSheet, Text, TouchableOpacity ,TextInput,Button,ToastAndroid,ActivityIndicator} from 'react-native';
 import CustomBorder from '../CustomUI/CustomBorder';
 import CustomActivityIndicator from '../CustomUI/CustomActivityIndicator';
 import AuthContext from '../Context/AuthContext';
-
+import AsyncStorage from '@react-native-community/async-storage';
+import { useSelector, useDispatch } from 'react-redux';
+import { submitLogin } from '../redux/actions/user_action';
 
 
 
  const Login = (props) => {
-
-    console.log("auth",AuthContext);
-    const { signIn } = React.useContext(AuthContext);
 
     const [email ,setEmail] = useState("");
     const [emailError , setEmailError ] = useState(false);
@@ -20,7 +19,8 @@ import AuthContext from '../Context/AuthContext';
     const [passwordError , setPasswordError ] = useState(false);
     const [passwordErrorMsg ,setPasswordErrorMsg ] = useState("");
 
-   const [loading_status ,setLoadingStatus ] = useState(false);
+   const loading_status  = useSelector(state => state.common.loading);
+   const disptch = useDispatch();
 
 
     const emailValidator = (val) => {
@@ -28,7 +28,7 @@ import AuthContext from '../Context/AuthContext';
         
         if(!val){
             setEmailError(true);
-            setEmailErrorMsg("Please enter email.");
+            setEmailErrorMsg("Voer een e-mailadres in.");
 
             return false;
 
@@ -36,7 +36,7 @@ import AuthContext from '../Context/AuthContext';
         val))){
 
             setEmailError(true);
-            setEmailErrorMsg("Please enter valid email.");
+            setEmailErrorMsg("Voer een geldig emailadres in.");
 
             return false
         }else{
@@ -54,12 +54,12 @@ import AuthContext from '../Context/AuthContext';
        
         if(!val) {
             setPasswordError(true);
-            setPasswordErrorMsg("Please enter password.");
+            setPasswordErrorMsg("Voer wachtwoord in alstublieft.");
             return false;
         }else if(val.length < 3 || val.length > 16){
            
             setPasswordError(true);
-            setPasswordErrorMsg("Password must be greater than 8 and less than 16 characters.");
+            setPasswordErrorMsg("Wachtwoord moet groter zijn dan 3 en minder dan 16 tekens.");
             return false;
         }else{
             setPasswordError(false);
@@ -76,28 +76,44 @@ import AuthContext from '../Context/AuthContext';
         if(emailValidator(email) && passwordValidator(password)){
 
             console.log("validated!");
-            const formData = {
-                "email":email,
-                "pass":password
-            }
-           // setLoadingStatus(true);
-           //{"email":"test2@test.com","pass":"test2"}
-           signIn(formData);
-           
+            disptch(submitLogin(email, password))
+            .then(response => {
+                
+                if(response.data.success){
+                        console.log("res,,,",response.data);
+                    AsyncStorage.setItem("hash",response.data.hash);
+                    AsyncStorage.setItem("name",response.data.name);
+                }else{
+                    ToastAndroid.show(response.data.erro,ToastAndroid.SHORT);
+                }
+            })
+            .catch(error => {
+                ToastAndroid.show("Something went wrong ! Please try again later.",ToastAndroid.SHORT);
+            })
+          
         }
 
     }
 
-    if(loading_status) {
-        return <CustomActivityIndicator />
+    if(loading_status){
+        return (<View
+            style={[
+            StyleSheet.absoluteFill,
+            { backgroundColor: 'rgba(0, 0, 0, 0.2)', justifyContent: 'center' }
+            ]}
+            >
+                <ActivityIndicator color={"#8CC53D"} size={30} />
+        </View>)
     }
 
+
+
     return(
-        
+    
         <View style={styles.container}>
 
-            <Image source={require('../assets/logo.png')} style={{width:200,height:150, }}/>
-            <Text style={styles.loginText}>Login</Text>
+            <Image source={require('../assets/logo.png')} style={{width:200,height:140, }}/>
+            <Text style={styles.loginText1}>Login</Text>
             <Text style={styles.labelText}>Email</Text>
             <CustomBorder>
                 <TextInput 
@@ -146,7 +162,9 @@ import AuthContext from '../Context/AuthContext';
 
             
         </View>
-
+        
+      
+       
     )
  }
 
@@ -161,9 +179,10 @@ import AuthContext from '../Context/AuthContext';
         alignItems:'center'
         
     },
-    loginText:{
+    loginText1:{
+        marginTop:20,
         fontSize:20,
-        marginBottom:20
+        marginBottom:10
     },
     labelText:{
         marginTop:20,
@@ -175,12 +194,14 @@ import AuthContext from '../Context/AuthContext';
     forgotPasswordBtn:{
         marginTop:25,
         marginRight:20,
+        marginBottom:20,
         alignSelf:"flex-end"
     },
     forgotPasswordText:{
         color:"#8CC53D",
         fontSize:15,
-        textDecorationLine:'underline'
+        textDecorationLine:'underline',
+        fontFamily:"roboto-bold"
     },
     loginBtn:{
       
@@ -195,6 +216,7 @@ import AuthContext from '../Context/AuthContext';
     loginText:{
         textAlign:"center",
         fontSize:15,
+        fontFamily:'roboto-bold',
         color:"white"
 
     },

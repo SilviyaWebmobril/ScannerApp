@@ -1,35 +1,27 @@
-import React ,{useState,useEffect} from 'react';
-import { Text } from 'react-native';
-import Splash from './src/Splash/Splash';
+import React from 'react';
 import AuthNavigator from './src/Navigators/AuthNavigator';
+import common_reducer  from './src/redux/reducers/common_reducer'; 
+import  user_reducer from './src/redux/reducers/user_reducer';
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk';
+import { Provider, useSelector } from 'react-redux';
+
+const App = () => {
+
+  const reducer = combineReducers({
+    common : common_reducer,
+    user : user_reducer
+});
+
+const store =  createStore(reducer,applyMiddleware(thunk));
 
 
-const App =(props) => {
+  return (
+    <Provider store={store}>
+      <AuthNavigator />
+      </Provider>
+  );
+};
 
-
-   //ßß const [isLoading ,setLoading ] = useState(true);
-
-    // useEffect(() => {
-    //   const spalshInterval = setTimeout(()=> {
-  
-    //     setLoading(false);
-  
-    // },3000);
-    //   return () => {
-    //     clearTimeout(spalshInterval);
-    //   }
-    // }, [])
-  
-    // if(isLoading){
-    //   return <Splash />
-    // }
-  
-    return (
-      <>
-        <AuthNavigator /> 
-      </>
-    )
-  
-}
 
 export default App;

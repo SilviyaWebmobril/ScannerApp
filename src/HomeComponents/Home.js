@@ -39,7 +39,7 @@ const Home = (props) => {
                         onPress={()=> props.navigation.navigate('Scan')}
                     >
                     <View style={styles.viewStyle} >
-                        <Image source={require('../assets/avtar.png')} style={{width:30,height:30,}} />
+                        <Image source={require('../assets/c.png')} style={{width:30,height:30,}} />
                         <Text style={styles.textStyle}>Capturar</Text>
                     </View>
                 </TouchableOpacity>

@@ -1,0 +1,9 @@
+export const LOADING = "LOADING";
+
+export const CREATE_ACCOUNT = "CREATE_ACCOUNT";
+
+export const RESPONSE_ERROR = "RESPONSE_ERROR";
+
+export const LOGOUT_USER = "LOGOUT_USER";
+
+export const SAVE_USER_RESULTS = "SAVE_USER_RESULTS";
